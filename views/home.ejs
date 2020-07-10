@@ -1,0 +1,183 @@
+<html>
+  <head>
+    <title>
+      <%= title %>
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lobster&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+      integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/css/home.css" />
+    <style>
+      /* Center the loader */
+      #loader {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 1;
+        width: 150px;
+        height: 150px;
+        margin: -75px 0 0 -75px;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+      }
+
+      @-webkit-keyframes spin {
+        0% {
+          -webkit-transform: rotate(0deg);
+        }
+        100% {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Add animation to "page content" */
+      .animate-bottom {
+        position: relative;
+        -webkit-animation-name: animatebottom;
+        -webkit-animation-duration: 1s;
+        animation-name: animatebottom;
+        animation-duration: 1s;
+      }
+
+      @-webkit-keyframes animatebottom {
+        from {
+          bottom: -100px;
+          opacity: 0;
+        }
+        to {
+          bottom: 0px;
+          opacity: 1;
+        }
+      }
+
+      @keyframes animatebottom {
+        from {
+          bottom: -100px;
+          opacity: 0;
+        }
+        to {
+          bottom: 0;
+          opacity: 1;
+        }
+      }
+
+      #myDiv {
+        display: none;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body onload="myFunction()" style="margin: 0;">
+    <div id="loader"></div>
+    <!-- script -->
+
+    <!-- container flex -->
+    <div style="display: none;" id="myDiv" class="animate-bottom">
+      <div id="container">
+        <!-- div for creating task -->
+        <div>
+          <h1 id="page-heading">TODO APP</h1>
+
+          <!-- form for creating task -->
+          <form id="task-input" action="/create-task" method="POST">
+            <label for="description">TASK</label><br />
+
+            <!-- enter the description -->
+            <input type="text" name="description" id="description" required />
+            <div class="horizontal-divider"></div>
+
+            <!-- select category -->
+            <label for="category">CATEGORY</label><br />
+            <select name="category" id="category">
+              <option value="" selected>Choose a category</option>
+              <option value="personal">Personal</option>
+              <option value="work">Work</option>
+              <option value="school">School</option>
+              <option value="cleaning">Cleaning</option>
+              <option value="other">Other</option>
+            </select>
+            <div class="horizontal-divider"></div>
+
+            <!-- enter the due date of the task -->
+            <label for="date">DUE DATE</label><br />
+            <input type="date" name="date" id="date" required /><br />
+            <div class="horizontal-divider"></div>
+
+            <button type="submit" id="add-btn">
+              <i class="fas fa-plus-square"></i> ADD TASK
+            </button>
+          </form>
+        </div>
+
+        <!-- div to show the tasks -->
+        <div>
+          <h3>&nbsp;</h3>
+          <h1 id="page-heading">TASK LIST</h1>
+
+          <!-- delete task form -->
+          <form method="POST" action="/delete-task" id="delete-form">
+            <!-- looping to show the tasks -->
+            <div id="task-list-container">
+              <% for (let i of task_list){%>
+              <div class="horizontal-divider"></div>
+              <div class="task">
+                <!-- task name and checkbox -->
+                <div class="checkbox">
+                  <input type="checkbox" name="<%=i._id%>" /><%= i.task %>
+                </div>
+
+                <!-- task category -->
+                <div class="category">
+                  Category : <span><%= i.category %></span>
+                </div>
+
+                <!-- task date  -->
+                <p><i class="fas fa-calendar-alt"></i> <%= i.date %></p>
+              </div>
+              <%}%>
+            </div>
+
+            <!-- delete task button -->
+            <button type="submit" id="delete-btn">
+              <i class="fas fa-trash"></i> DELETE TASKS
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var myVar;
+
+      function myFunction() {
+        myVar = setTimeout(showPage, 1000);
+      }
+
+      function showPage() {
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("myDiv").style.display = "block";
+      }
+    </script>
+  </body>
+</html>
